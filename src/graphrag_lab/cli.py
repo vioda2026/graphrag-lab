@@ -12,7 +12,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--mode",
         default="local-debug",
-        choices=["local-debug", "multi-gpu", "api-llm"],
+        choices=["local-debug", "multi-gpu", "api-llm", "graphragbench-debug"],
         help="Run profile from configs/profiles",
     )
     return parser
