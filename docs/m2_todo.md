@@ -8,5 +8,5 @@
    - memory write/read primitives
    - controller policy stubs
    - memory-aware retrieval features
-6. Expand experiment tracking with run IDs, seed sweep support, and CSV/JSONL aggregation.
+6. ⏳ Expand experiment tracking with run IDs, seed sweep support, and CSV/JSONL aggregation. (run IDs + CSV/JSONL ✅; seed sweep pending)
 7. Add regression tests for module contracts and benchmark adapter compatibility.

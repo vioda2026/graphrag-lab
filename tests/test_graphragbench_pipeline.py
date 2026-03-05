@@ -12,6 +12,11 @@ class GraphRAGBenchPipelineTest(unittest.TestCase):
 
         self.assertEqual(report["summary"]["mode"], "graphragbench-debug")
         self.assertEqual(report["summary"]["num_samples"], 2)
+        self.assertIn("run_id", report["summary"])
+
+        artifacts = Path.cwd() / "artifacts"
+        self.assertTrue((artifacts / "experiment_runs.jsonl").exists())
+        self.assertTrue((artifacts / "experiment_runs.csv").exists())
 
 
 if __name__ == "__main__":
