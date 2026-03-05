@@ -1,0 +1,6 @@
+runtime:
+  mode: local-debug
+  output_dir: artifacts
+
+explorer:
+  top_k: 3

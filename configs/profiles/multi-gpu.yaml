@@ -1,0 +1,9 @@
+runtime:
+  mode: multi-gpu
+  output_dir: artifacts
+
+explorer:
+  top_k: 4
+
+retriever:
+  top_k: 4

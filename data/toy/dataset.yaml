@@ -1,0 +1,15 @@
+documents:
+  - id: doc_1
+    text: "GraphRAG combines retrieval and generation over graph-structured knowledge."
+  - id: doc_2
+    text: "A800 multi-GPU training can improve throughput for large retrieval models."
+  - id: doc_3
+    text: "Local CPU debug mode is useful for rapid experimentation before scaling."
+
+queries:
+  - id: q_1
+    question: "What is GraphRAG built on?"
+    expected_answer: "graph-structured knowledge"
+  - id: q_2
+    question: "What is local debug mode good for?"
+    expected_answer: "rapid experimentation"

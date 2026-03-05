@@ -1,0 +1,6 @@
+runtime:
+  mode: api-llm
+  output_dir: artifacts
+
+reader:
+  mode: api-llm-stub
