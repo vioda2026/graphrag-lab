@@ -1,0 +1,13 @@
+runtime:
+  mode: graphragbench-debug
+  output_dir: artifacts
+
+benchmark:
+  name: graphragbench
+  split: test
+
+explorer:
+  top_k: 3
+
+retriever:
+  top_k: 3

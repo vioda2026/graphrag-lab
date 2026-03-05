@@ -34,6 +34,13 @@ class ReaderConfig:
 @dataclass(slots=True)
 class DataConfig:
     toy_data_path: Path
+    graphragbench_data_path: Path
+
+
+@dataclass(slots=True)
+class BenchmarkConfig:
+    name: str
+    split: str
 
 
 @dataclass(slots=True)
@@ -44,3 +51,4 @@ class AppConfig:
     retriever: RetrieverConfig
     reader: ReaderConfig
     data: DataConfig
+    benchmark: BenchmarkConfig

@@ -1,0 +1,3 @@
+{"sample_id":"gqb-1","split":"train","question":"Who discovered penicillin?","expected_answer":"Alexander Fleming","documents":[{"id":"d1","text":"Penicillin was discovered by Alexander Fleming in 1928."},{"id":"d2","text":"Marie Curie pioneered radioactivity research."}]}
+{"sample_id":"gqb-2","split":"test","question":"What is the capital of France?","expected_answer":"Paris","documents":[{"id":"d3","text":"France has many cities. Paris is its capital."},{"id":"d4","text":"Berlin is the capital of Germany."}]}
+{"sample_id":"gqb-3","split":"test","question":"Which planet is known as the Red Planet?","expected_answer":"Mars","documents":[{"id":"d5","text":"Mars is often called the Red Planet due to iron oxide."}]}

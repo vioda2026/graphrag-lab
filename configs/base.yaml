@@ -17,3 +17,8 @@ reader:
 
 data:
   toy_data_path: data/toy/dataset.yaml
+  graphragbench_data_path: data/graphragbench/sample.jsonl
+
+benchmark:
+  name: toy
+  split: test

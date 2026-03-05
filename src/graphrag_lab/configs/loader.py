@@ -8,6 +8,7 @@ import yaml
 
 from graphrag_lab.configs.schema import (
     AppConfig,
+    BenchmarkConfig,
     BuilderConfig,
     DataConfig,
     ExplorerConfig,
@@ -46,13 +47,24 @@ def load_config(mode: str, config_root: Path | None = None) -> AppConfig:
         seed=int(merged["runtime"]["seed"]),
         output_dir=_resolve_path(merged["runtime"]["output_dir"], Path.cwd()),
     )
+    benchmark_cfg = merged.get("benchmark", {"name": "toy", "split": "test"})
     return AppConfig(
         runtime=runtime,
         builder=BuilderConfig(min_edge_weight=float(merged["builder"]["min_edge_weight"])),
         explorer=ExplorerConfig(top_k=int(merged["explorer"]["top_k"])),
         retriever=RetrieverConfig(top_k=int(merged["retriever"]["top_k"])),
         reader=ReaderConfig(mode=str(merged["reader"]["mode"])),
-        data=DataConfig(toy_data_path=_resolve_path(merged["data"]["toy_data_path"], Path.cwd())),
+        data=DataConfig(
+            toy_data_path=_resolve_path(merged["data"]["toy_data_path"], Path.cwd()),
+            graphragbench_data_path=_resolve_path(
+                merged["data"].get("graphragbench_data_path", "data/graphragbench/sample.jsonl"),
+                Path.cwd(),
+            ),
+        ),
+        benchmark=BenchmarkConfig(
+            name=str(benchmark_cfg.get("name", "toy")),
+            split=str(benchmark_cfg.get("split", "test")),
+        ),
     )
 
 
@@ -60,4 +72,5 @@ def dump_config(config: AppConfig) -> Dict[str, Any]:
     data = asdict(config)
     data["runtime"]["output_dir"] = str(config.runtime.output_dir)
     data["data"]["toy_data_path"] = str(config.data.toy_data_path)
+    data["data"]["graphragbench_data_path"] = str(config.data.graphragbench_data_path)
     return data

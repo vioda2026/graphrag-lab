@@ -1,6 +1,6 @@
 # M2 TODO (GraphRAGBench + UnifiedMem-Inspired)
 
-1. Integrate GraphRAGBench adapter with train/val/test splits and official metrics.
+1. ✅ Integrate GraphRAGBench adapter with train/val/test split filtering (official metric parity pending; currently lexical-F1 + exact/contains fallback).
 2. Add retriever training loop with PyTorch dataloaders and checkpointing.
 3. Add distributed launcher hooks for 4xA800 (`torchrun`, gradient accumulation, mixed precision).
 4. Implement API-LLM reader client interface with retry, rate-limit, and response caching.
