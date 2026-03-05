@@ -3,7 +3,9 @@ from __future__ import annotations
 import csv
 import json
 import random
+import statistics
 import uuid
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List
@@ -112,3 +114,29 @@ def run_toy_pipeline(config: AppConfig) -> Dict[str, object]:
         fieldnames=["run_id", "timestamp_utc", "mode", "benchmark", "split", "seed", "avg_score", "num_samples"],
     )
     return report
+
+
+def run_seed_sweep(config: AppConfig, seeds: List[int]) -> Dict[str, object]:
+    if not seeds:
+        raise ValueError("seeds must not be empty")
+
+    runs: List[Dict[str, object]] = []
+    for seed in seeds:
+        seeded_cfg = replace(config, runtime=replace(config.runtime, seed=seed))
+        report = run_toy_pipeline(seeded_cfg)
+        runs.append(report["summary"])
+
+    avg_scores = [float(r["avg_score"]) for r in runs]
+    aggregate = {
+        "mode": config.runtime.mode,
+        "benchmark": config.benchmark.name,
+        "split": config.benchmark.split,
+        "seeds": seeds,
+        "num_runs": len(runs),
+        "mean_avg_score": statistics.fmean(avg_scores),
+        "std_avg_score": statistics.pstdev(avg_scores) if len(avg_scores) > 1 else 0.0,
+    }
+
+    sweep_report = {"aggregate": aggregate, "runs": runs}
+    write_json(config.runtime.output_dir / f"seed_sweep_{config.runtime.mode}.json", sweep_report)
+    return sweep_report
