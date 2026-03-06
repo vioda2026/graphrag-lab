@@ -10,7 +10,14 @@
      - ✅ `save_checkpoint()` / `load_checkpoint()`
    - ✅ Unit tests (`test_retriever_trainer.py`) - 6 tests (1 passing, 5 skipped pending PyTorch)
    - ⏳ Actual model integration (pending PyTorch install)
-3. Add distributed launcher hooks for 4xA800 (`torchrun`, gradient accumulation, mixed precision).
+3. ✅ Distributed launcher hooks for 4xA800 (`torchrun`, gradient accumulation, mixed precision) (2026-03-06 13:33).
+   - ✅ `DistributedConfig` schema (world_size, rank, backend, mixed_precision, etc.)
+   - ✅ `get_distributed_config_from_env()` - env var parsing
+   - ✅ `is_main_process()` - rank 0 detection
+   - ✅ `get_effective_batch_size()` - effective BS calculation
+   - ✅ `setup_distributed_training()` / `cleanup_distributed_training()` scaffolds
+   - ✅ `A800HardwareProfile` - 4xA800 optimized settings (bf16, 512 effective BS)
+   - ✅ Unit tests (`test_distributed_launcher.py`) - 16 tests passing
 4. ✅ API-LLM reader client interface with retry, rate-limit, and response caching (2026-03-06 12:30).
    - ✅ `APILLMReaderConfig` schema
    - ✅ `ResponseCache` (file-based, 24h TTL)
@@ -23,4 +30,4 @@
    - controller policy stubs
    - memory-aware retrieval features
 6. ✅ Expand experiment tracking with run IDs, seed sweep support, and CSV/JSONL aggregation.
-7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (22 tests total, 17 passing, 5 skipped pending PyTorch).
+7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (38 tests total, 33 passing, 5 skipped pending PyTorch).
