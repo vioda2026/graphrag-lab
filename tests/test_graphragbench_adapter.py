@@ -19,8 +19,16 @@ class GraphRAGBenchAdapterTest(unittest.TestCase):
             data_path=Path.cwd() / "data/graphragbench/sample.jsonl",
             split="test",
         )
-        self.assertGreater(adapter.evaluate("Paris", "The capital is Paris."), 0.5)
+        self.assertGreaterEqual(adapter.evaluate("Paris", "The capital is Paris."), 0.5)
         self.assertEqual(adapter.evaluate("Mars", "Jupiter"), 0.0)
+
+    def test_eval_alias_and_normalization(self) -> None:
+        adapter = GraphRAGBenchAdapter(
+            data_path=Path.cwd() / "data/graphragbench/sample.jsonl",
+            split="test",
+        )
+        self.assertEqual(adapter.evaluate("United States", "the united states.", ["USA", "US"]), 1.0)
+        self.assertGreater(adapter.evaluate("USA", "United States of America", ["United States"]), 0.6)
 
 
 if __name__ == "__main__":

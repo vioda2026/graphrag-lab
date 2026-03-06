@@ -23,7 +23,13 @@ class ToyBenchmarkAdapter(BenchmarkAdapter):
                 expected_answer=q["expected_answer"],
             )
 
-    def evaluate(self, expected: str, predicted: str) -> float:
+    def evaluate(self, expected: str, predicted: str, answer_aliases: List[str] | None = None) -> float:
         e = expected.strip().lower()
         p = predicted.strip().lower()
-        return float(e in p or p in e)
+        if e == p or e in p or p in e:
+            return 1.0
+        for alias in answer_aliases or []:
+            a = alias.strip().lower()
+            if a and (a == p or a in p or p in a):
+                return 1.0
+        return 0.0

@@ -66,7 +66,7 @@ def run_toy_pipeline(config: AppConfig) -> Dict[str, object]:
         candidates = explorer.explore(graph, sample.query, top_k=config.explorer.top_k)
         retrieved = retriever.retrieve(graph, sample.query, candidates[: config.retriever.top_k])
         read_result = reader.read(sample.query, retrieved)
-        score = adapter.evaluate(sample.expected_answer, read_result.answer)
+        score = adapter.evaluate(sample.expected_answer, read_result.answer, sample.answer_aliases)
         scores.append(score)
         samples_out.append(
             {
