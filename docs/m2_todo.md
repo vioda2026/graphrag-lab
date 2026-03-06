@@ -25,9 +25,16 @@
    - ✅ `APILLMReader` with retry logic (exponential backoff)
    - ✅ Unit tests (`test_api_llm_reader.py`) - 10 tests passing
    - ✅ Environment variable configuration support
-5. Add UnifiedMem-inspired memory module interface:
-   - memory write/read primitives
-   - controller policy stubs
-   - memory-aware retrieval features
+5. 🔄 UnifiedMem-inspired memory module interface (2026-03-06 14:49 scaffold, 3 tests failing).
+   - ✅ `MemoryRecord`, `MemoryQuery`, `MemoryResult` dataclasses
+   - ✅ `InMemoryStorage` (write/read/update/delete)
+   - ✅ `SimpleMemoryController` (eviction policy stubs)
+   - ✅ `MemoryAwareRetriever` (hybrid scoring)
+   - ✅ `MemoryManager` (high-level API)
+   - ⚠️ 3 tests failing:
+     - `test_update_access`: access_count double counting
+     - `test_remember_triggers_eviction`: eviction not triggering
+     - `test_save_and_load`: persistence not implemented
+   - ⏳ Pending: bug fixes + persistence implementation
 6. ✅ Expand experiment tracking with run IDs, seed sweep support, and CSV/JSONL aggregation.
-7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (38 tests total, 33 passing, 5 skipped pending PyTorch).
+7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (57 tests total, 49 passing, 5 skipped pending PyTorch, 3 failing in unified_memory).
