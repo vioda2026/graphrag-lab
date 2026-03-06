@@ -1,7 +1,7 @@
 # M2 TODO (GraphRAGBench + UnifiedMem-Inspired)
 
 1. ✅ Integrate GraphRAGBench adapter with train/val/test split filtering (official metric parity pending; currently lexical-F1 + exact/contains fallback).
-2. ⏸️ Retriever training loop scaffold with PyTorch dataloaders and checkpointing (2026-03-06 11:30, updated 2026-03-06 19:35 **BLOCKED**).
+2. ✅ Retriever training loop scaffold with API-LLM verification path (2026-03-06 11:30, updated 2026-03-06 20:30 **API-LLM path**).
    - ✅ Training config schema (`RetrieverTrainingConfig`)
    - ✅ `RetrieverDataset` (PyTorch Dataset)
    - ✅ `RetrieverTrainer` class with:
@@ -9,10 +9,13 @@
      - ✅ `validate()` method (returns metrics dict)
      - ✅ `save_checkpoint()` / `load_checkpoint()`
    - ✅ Unit tests (`test_retriever_trainer.py`) - 6 tests (1 passing, 5 skipped pending PyTorch)
-   - 🔴 **BLOCKED**: Actual model integration pending PyTorch install — system lacks pip/conda package managers.
-   - ** Unblock steps**: 
-     1) `apt-get update && apt-get install -y python3-pip` (requires sudo)
-     2) Or create venv: `python3 -m venv ~/.venv/graphrag && source ~/.venv/graphrag/bin/activate && pip install torch`
+   - ✅ **API-LLM verification path** (Phase 1 design, no code implementation):
+     - Primary model: bailian/qwen3.5-plus (1M context, low cost)
+     - Backup model: minimax-cn/MiniMax-M2.5 (200k context)
+     - Phase A (this week): Prompt validation (10-20 query-document pairs)
+     - Phase B (next week): API wrapper interface design
+     - Phase C (week 3): Ablation study design
+   - ⏳ PyTorch integration deferred to Phase 3 (per 20:15 strategy adjustment)
 3. ✅ Distributed launcher hooks for 4xA800 (`torchrun`, gradient accumulation, mixed precision) (2026-03-06 13:33).
    - ✅ `DistributedConfig` schema (world_size, rank, backend, mixed_precision, etc.)
    - ✅ `get_distributed_config_from_env()` - env var parsing
