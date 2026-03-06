@@ -68,11 +68,12 @@ class InMemoryStorageTest(unittest.TestCase):
         """Test updating access time."""
         self.storage.write("key1", "content1")
         record = self.storage.read("key1")
-        initial_count = record.access_count
+        initial_count = record.access_count  # access_count=1 after first read
         
-        self.storage.update_access("key1")
-        updated = self.storage.read("key1")
-        self.assertEqual(updated.access_count, initial_count + 1)
+        self.storage.update_access("key1")   # access_count=2
+        # Note: read() also calls update_access(), so we check the record directly
+        updated_record = self.storage._storage["key1"]
+        self.assertEqual(updated_record.access_count, initial_count + 1)  # 2 == 1 + 1
 
 
 class SimpleMemoryControllerTest(unittest.TestCase):

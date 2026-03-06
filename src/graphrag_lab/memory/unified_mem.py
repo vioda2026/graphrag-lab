@@ -235,12 +235,14 @@ class MemoryManager:
     
     def remember(self, key: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> MemoryRecord:
         """Store a memory record."""
-        # Check if eviction is needed
+        # First write the record
+        record = self.storage.write(key, content, metadata)
+        
+        # Then check if eviction is needed (after adding)
         if self.controller.should_evict():
             evicted = self.controller.evict(count=1)
             print(f"Evicted {len(evicted)} records: {evicted}")
         
-        record = self.storage.write(key, content, metadata)
         return record
     
     def recall(self, key: str) -> Optional[MemoryRecord]:
@@ -262,16 +264,49 @@ class MemoryManager:
     
     def save(self, path: Path) -> None:
         """Save memory state to disk."""
-        # In real implementation, save storage to disk
-        # For now, this is a placeholder
+        import json
+        
         path.parent.mkdir(parents=True, exist_ok=True)
-        # self.storage.save(path)
+        
+        # Serialize storage to JSON
+        data = {
+            "records": {
+                key: {
+                    "key": record.key,
+                    "content": record.content,
+                    "created_at": record.created_at,
+                    "last_accessed": record.last_accessed,
+                    "access_count": record.access_count,
+                    "metadata": record.metadata,
+                }
+                for key, record in self.storage._storage.items()
+            }
+        }
+        
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
     
     def load(self, path: Path) -> None:
         """Load memory state from disk."""
-        # In real implementation, load storage from disk
-        # For now, this is a placeholder
-        pass
+        import json
+        
+        if not path.exists():
+            return
+        
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        # Deserialize from JSON
+        for key, record_data in data.get("records", {}).items():
+            record = MemoryRecord(
+                key=record_data["key"],
+                content=record_data["content"],
+                created_at=record_data["created_at"],
+                last_accessed=record_data["last_accessed"],
+                access_count=record_data["access_count"],
+                metadata=record_data["metadata"],
+            )
+            self.storage._storage[key] = record
 
 
 def create_memory_manager_from_env() -> MemoryManager:
