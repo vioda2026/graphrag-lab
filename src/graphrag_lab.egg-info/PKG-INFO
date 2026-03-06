@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: graphrag-lab
+Version: 0.1.0
+Summary: M1 GraphRAG research scaffold with a CPU-safe toy pipeline.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: PyYAML>=6.0
+Provides-Extra: dev
+
+# GraphRAG Lab (M1)
+
+M1 delivers a minimal, runnable GraphRAG research scaffold focused on:
+- graph structure experiments (`graph_builder`)
+- graph traversal/retrieval experiments (`graph_explorer`)
+- pluggable retriever/reader/benchmark adapters
+- YAML config profiles for `local-debug`, `multi-gpu`, `api-llm`, and `graphragbench-debug`
+- a CPU-safe toy end-to-end pipeline
+
+## M2 in progress
+- GraphRAGBench adapter scaffold added (`data/graphragbench/sample.jsonl`, split filtering + lightweight metric).
+
+## Quickstart
+
+```bash
+make run-toy
+```
+
+Artifacts are written under `artifacts/`.

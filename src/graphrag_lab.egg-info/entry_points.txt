@@ -1,0 +1,2 @@
+[console_scripts]
+graphrag-m1 = graphrag_lab.cli:main
