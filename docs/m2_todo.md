@@ -11,10 +11,16 @@
    - ✅ Unit tests (`test_retriever_trainer.py`) - 6 tests (1 passing, 5 skipped pending PyTorch)
    - ⏳ Actual model integration (pending PyTorch install)
 3. Add distributed launcher hooks for 4xA800 (`torchrun`, gradient accumulation, mixed precision).
-4. Implement API-LLM reader client interface with retry, rate-limit, and response caching.
+4. ✅ API-LLM reader client interface with retry, rate-limit, and response caching (2026-03-06 12:30).
+   - ✅ `APILLMReaderConfig` schema
+   - ✅ `ResponseCache` (file-based, 24h TTL)
+   - ✅ `RateLimiter` (sliding window)
+   - ✅ `APILLMReader` with retry logic (exponential backoff)
+   - ✅ Unit tests (`test_api_llm_reader.py`) - 10 tests passing
+   - ✅ Environment variable configuration support
 5. Add UnifiedMem-inspired memory module interface:
    - memory write/read primitives
    - controller policy stubs
    - memory-aware retrieval features
 6. ✅ Expand experiment tracking with run IDs, seed sweep support, and CSV/JSONL aggregation.
-7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (12 tests total, 7 passing, 5 skipped pending PyTorch).
+7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (22 tests total, 17 passing, 5 skipped pending PyTorch).
