@@ -27,6 +27,19 @@ class RetrieverConfig:
 
 
 @dataclass(slots=True)
+class RetrieverTrainingConfig:
+    """Configuration for retriever training loop."""
+    model_name: str
+    batch_size: int
+    learning_rate: float
+    num_epochs: int
+    checkpoint_dir: Path
+    warmup_ratio: float
+    max_length: int
+    margin: float
+
+
+@dataclass(slots=True)
 class ReaderConfig:
     mode: str
 
