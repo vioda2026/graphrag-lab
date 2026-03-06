@@ -96,6 +96,68 @@ class RetrieverTrainerTest(unittest.TestCase):
                 self.assertLessEqual(len(batch), self.config.batch_size)
         except ImportError:
             self.skipTest("PyTorch not available")
+    
+    def test_train_step(self):
+        """Test train_step method for batch training."""
+        try:
+            trainer = RetrieverTrainer(self.config)
+            
+            # Create a mock model for testing
+            class MockModel:
+                def train(self):
+                    pass
+                def eval(self):
+                    pass
+            
+            trainer.model = MockModel()
+            
+            batch = [
+                TrainingSample(
+                    query="Test query",
+                    positive_node_id="node_1",
+                    positive_text="Positive text",
+                    negative_node_ids=["node_2"],
+                    negative_texts=["Negative text"],
+                )
+            ]
+            
+            loss = trainer.train_step(batch)
+            self.assertIsInstance(loss, float)
+            self.assertGreaterEqual(loss, 0.0)
+        except ImportError:
+            self.skipTest("PyTorch not available")
+    
+    def test_validate(self):
+        """Test validate method returns metrics dict."""
+        try:
+            trainer = RetrieverTrainer(self.config)
+            
+            # Create a mock model for testing
+            class MockModel:
+                def train(self):
+                    pass
+                def eval(self):
+                    pass
+            
+            trainer.model = MockModel()
+            
+            samples = [
+                TrainingSample(
+                    query=f"Query {i}",
+                    positive_node_id=f"node_{i}",
+                    positive_text=f"Positive text {i}",
+                    negative_node_ids=[f"neg_{i}_1"],
+                    negative_texts=[f"Negative text {i}"],
+                )
+                for i in range(4)
+            ]
+            
+            metrics = trainer.validate(samples)
+            self.assertIsInstance(metrics, dict)
+            self.assertIn("val_loss", metrics)
+            self.assertIsInstance(metrics["val_loss"], float)
+        except ImportError:
+            self.skipTest("PyTorch not available")
 
 
 if __name__ == "__main__":

@@ -88,6 +88,30 @@ class RetrieverTrainer:
         """Collate function for DataLoader."""
         return batch
     
+    def train_step(self, batch: List[TrainingSample]) -> float:
+        """
+        Perform a single training step on a batch.
+        
+        Args:
+            batch: List of TrainingSample objects
+            
+        Returns:
+            Loss value for this batch
+        """
+        if self.model is None:
+            raise RuntimeError("Model must be initialized before training")
+        
+        self.model.train()
+        batch_loss = self._compute_loss(batch)
+        
+        # In actual implementation, this would:
+        # 1. Forward pass through model
+        # 2. Compute loss
+        # 3. Backward pass
+        # 4. Optimizer step
+        
+        return batch_loss
+    
     def train_epoch(
         self, 
         dataloader: DataLoader, 
@@ -99,17 +123,11 @@ class RetrieverTrainer:
         Returns:
             Tuple of (average_loss, batch_logs)
         """
-        if self.model is None:
-            raise RuntimeError("Model must be initialized before training")
-        
-        self.model.train()
         total_loss = 0.0
         batch_logs = []
         
         for batch_idx, batch in enumerate(dataloader):
-            # Placeholder: actual training logic to be implemented
-            # This is the scaffold - actual model training goes here
-            batch_loss = self._compute_loss(batch)
+            batch_loss = self.train_step(batch)
             total_loss += batch_loss
             
             batch_logs.append({
@@ -217,8 +235,8 @@ class RetrieverTrainer:
             }
             
             if val_samples:
-                val_loss = self.evaluate(val_samples)
-                epoch_summary["val_loss"] = val_loss
+                val_metrics = self.validate(val_samples)
+                epoch_summary["val_loss"] = val_metrics["val_loss"]
             
             training_history.append(epoch_summary)
         
@@ -233,16 +251,37 @@ class RetrieverTrainer:
             "final_checkpoint": str(checkpoint.checkpoint_path),
         }
     
-    def evaluate(self, val_samples: List[TrainingSample]) -> float:
-        """Evaluate on validation set."""
+    def validate(self, val_samples: List[TrainingSample]) -> Dict[str, float]:
+        """
+        Validate on validation set.
+        
+        Args:
+            val_samples: Validation samples
+            
+        Returns:
+            Dictionary with validation metrics (loss, etc.)
+        """
         if self.model is None:
-            raise RuntimeError("Model must be initialized before evaluation")
+            raise RuntimeError("Model must be initialized before validation")
         
         self.model.eval()
         val_loader = self.create_dataloader(val_samples, shuffle=False)
         
         total_loss = 0.0
-        for batch in val_loader:
-            total_loss += self._compute_loss(batch)
+        num_batches = 0
         
-        return total_loss / max(1, len(val_loader))
+        with torch.no_grad():
+            for batch in val_loader:
+                total_loss += self._compute_loss(batch)
+                num_batches += 1
+        
+        avg_loss = total_loss / max(1, num_batches)
+        
+        return {
+            "val_loss": avg_loss,
+        }
+    
+    def evaluate(self, val_samples: List[TrainingSample]) -> float:
+        """Evaluate on validation set (alias for validate, returns just loss)."""
+        metrics = self.validate(val_samples)
+        return metrics["val_loss"]
