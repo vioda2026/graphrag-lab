@@ -41,3 +41,26 @@
    - ✅ All 19 tests passing
 6. ✅ Expand experiment tracking with run IDs, seed sweep support, and CSV/JSONL aggregation.
 7. ✅ Add regression tests for module contracts and benchmark adapter compatibility (64 tests total, 55 passing, 9 skipped pending PyTorch).
+8. ✅ **Stage 1 P0 Hypothesis Prototypes** (2026-03-08 00:57, commit 39c3c79):
+   - ✅ `community_detector.py`: k-core decomposition for community detection
+     - `detect_communities()`: k-core + connected components
+     - `get_core_communities()`: multi-level k-core analysis
+     - 4 unit tests passing
+   - ✅ `node_ranker.py`: SPRIG personalized PageRank for node ranking
+     - `sprig_rank()`: query-aware personalization
+     - `rank_with_community_boost()`: community-enhanced ranking
+     - `get_top_k_nodes()`: top-k extraction utility
+     - 4 unit tests passing
+   - ✅ `retriever_controller.py`: confidence-based adaptive termination
+     - `RetrieverController`: dynamic threshold adjustment
+     - `check_convergence()`: window-based convergence detection
+     - `check_early_stop()`: patience-based early stopping
+     - 5 unit tests passing
+   - ✅ `evidence_provenance_graph.py`: verifiable evidence tracking
+     - `ProvenanceNode`/`ProvenanceEdge`: typed graph elements
+     - `EvidenceProvenanceGraph`: full reasoning audit trail
+     - `compute_confidence_propagation()`: weakest-link confidence
+     - `get_interpretation()`: human-readable explanations
+     - 10 unit tests passing
+   - **Total**: 23 new unit tests, ~1105 lines (430 production + 675 tests)
+   - **Dependencies installed**: networkx 2.4, numpy 1.21.5 (via apt)
